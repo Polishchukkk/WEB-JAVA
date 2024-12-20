@@ -42,6 +42,7 @@ dependencies {
     // WireMock for mocking external APIs in tests
     testImplementation 'com.github.tomakehurst:wiremock-jre8:2.35.0'
 
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

@@ -16,9 +16,4 @@ public interface ProductMapper {
     ProductDTO productToProductDTO(Product product);
     Product productDTOToProduct(ProductDTO productDTO);
 
-    CategoryDTO categoryToCategoryDTO(Category category);
-    Category categoryDTOToCategory(CategoryDTO categoryDTO);
-
-    OrderDTO orderToOrderDTO(Order order);
-    Order orderDTOToOrder(OrderDTO orderDTO);
 }
