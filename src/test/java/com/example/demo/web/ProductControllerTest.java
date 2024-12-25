@@ -1,9 +1,9 @@
 package com.example.demo.web;
 
-import com.example.demo.service.ProductService;
-import com.example.demo.web.ProductController;
-import com.example.demo.domain.Product;
 import com.example.demo.dto.ProductDTO;
+import com.example.demo.domain.Product;
+import com.example.demo.mapper.ProductMapper;
+import com.example.demo.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,16 +22,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductControllerTest {
 
     @Mock
-    private ProductService productService; // Мокуємо ProductService
+    private ProductService productService;
+
+    @Mock
+    private ProductMapper productMapper;
 
     @InjectMocks
-    private ProductController productController; // Інжекція моків в контролер
+    private ProductController productController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Ініціалізація моків
+        MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
@@ -41,7 +44,13 @@ class ProductControllerTest {
         product.setId(UUID.randomUUID());
         product.setName("Test Product");
         product.setPrice(29.99);
+
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName("Test Product");
+        productDTO.setPrice(29.99);
+
         when(productService.getAllProducts()).thenReturn(List.of(product));
+        when(productMapper.productToProductDTO(any(Product.class))).thenReturn(productDTO);
 
         mockMvc.perform(get("/api/products"))
                 .andExpect(status().isOk())
@@ -52,7 +61,7 @@ class ProductControllerTest {
     @Test
     void testCreateProduct() throws Exception {
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setName("Star Product");  // Тепер це ім'я містить космічний термін
+        productDTO.setName("Star Product");
         productDTO.setPrice(19.99);
 
         Product product = new Product();
@@ -60,13 +69,57 @@ class ProductControllerTest {
         product.setName("Star Product");
         product.setPrice(19.99);
 
+        ProductDTO savedProductDTO = new ProductDTO();
+        savedProductDTO.setName("Star Product");
+        savedProductDTO.setPrice(19.99);
+
+        when(productMapper.productDTOToProduct(any(ProductDTO.class))).thenReturn(product);
         when(productService.saveProduct(any(Product.class))).thenReturn(product);
+        when(productMapper.productToProductDTO(any(Product.class))).thenReturn(savedProductDTO);
 
         mockMvc.perform(post("/api/products")
                         .contentType("application/json")
                         .content("{\"name\":\"Star Product\",\"price\":19.99}"))
-                .andExpect(status().isCreated())  // Тепер очікуємо 201 Created
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Star Product"))
                 .andExpect(jsonPath("$.price").value(19.99));
+    }
+
+    @Test
+    void testUpdateProduct() throws Exception {
+        UUID productId = UUID.randomUUID();
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName("Updated Star Product");
+        productDTO.setPrice(29.99);
+
+        Product product = new Product();
+        product.setId(productId);
+        product.setName("Updated Star Product");
+        product.setPrice(29.99);
+
+        ProductDTO updatedProductDTO = new ProductDTO();
+        updatedProductDTO.setName("Updated Star Product");
+        updatedProductDTO.setPrice(29.99);
+
+        when(productMapper.productDTOToProduct(any(ProductDTO.class))).thenReturn(product);
+        when(productService.updateProduct(eq(productId), any(Product.class))).thenReturn(product);
+        when(productMapper.productToProductDTO(any(Product.class))).thenReturn(updatedProductDTO);
+
+        mockMvc.perform(put("/api/products/{id}", productId)
+                        .contentType("application/json")
+                        .content("{\"name\":\"Updated Star Product\",\"price\":29.99}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Updated Star Product"))
+                .andExpect(jsonPath("$.price").value(29.99));
+    }
+
+    @Test
+    void testDeleteProduct() throws Exception {
+        UUID productId = UUID.randomUUID();
+
+        doNothing().when(productService).deleteProduct(productId);
+
+        mockMvc.perform(delete("/api/products/{id}", productId))
+                .andExpect(status().isNoContent());
     }
 }
