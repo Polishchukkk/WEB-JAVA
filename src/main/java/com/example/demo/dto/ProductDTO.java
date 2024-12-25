@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.validation.CosmicWordCheck;
 import jakarta.validation.constraints.*;
 import java.util.UUID;
 
@@ -8,6 +9,7 @@ public class ProductDTO {
 
     @NotNull
     @Size(min = 3, max = 50)
+    @CosmicWordCheck  // Додаємо кастомну валідацію до поля name
     private String name;
 
     @NotNull

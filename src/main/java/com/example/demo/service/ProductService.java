@@ -1,10 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Product;
-import com.example.demo.dto.ProductDTO;
-
+import org.springframework.stereotype.Service;
 import java.util.*;
 
+@Service
 public class ProductService {
     private final Map<UUID, Product> productRepository = new HashMap<>();
 
@@ -13,7 +13,8 @@ public class ProductService {
     }
 
     public Product getProductById(UUID id) {
-        return productRepository.get(id);
+        return Optional.ofNullable(productRepository.get(id))
+                .orElseThrow(() -> new NoSuchElementException("Product with ID " + id + " not found"));
     }
 
     public Product saveProduct(Product product) {
@@ -23,12 +24,18 @@ public class ProductService {
     }
 
     public Product updateProduct(UUID id, Product product) {
+        if (!productRepository.containsKey(id)) {
+            throw new NoSuchElementException("Product with ID " + id + " not found for update");
+        }
         product.setId(id);
         productRepository.put(id, product);
         return product;
     }
 
     public void deleteProduct(UUID id) {
+        if (!productRepository.containsKey(id)) {
+            throw new NoSuchElementException("Product with ID " + id + " not found for deletion");
+        }
         productRepository.remove(id);
     }
 }

@@ -18,7 +18,6 @@ public class OrderDTO {
     @NotNull
     private LocalDate orderDate;
 
-    // Getters and setters
     public UUID getOrderId() {
         return orderId;
     }

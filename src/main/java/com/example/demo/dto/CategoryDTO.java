@@ -1,7 +1,11 @@
 package com.example.demo.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
+
 
 public class CategoryDTO {
     private UUID id;

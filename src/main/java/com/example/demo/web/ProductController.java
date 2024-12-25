@@ -1,7 +1,7 @@
 package com.example.demo.web;
 
-import com.example.demo.domain.Product;
 import com.example.demo.dto.ProductDTO;
+import com.example.demo.domain.Product;
 import com.example.demo.mapper.ProductMapper;
 import com.example.demo.service.ProductService;
 import jakarta.validation.Valid;
@@ -15,7 +15,11 @@ import java.util.UUID;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService productService = new ProductService();
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public List<ProductDTO> getAllProducts() {

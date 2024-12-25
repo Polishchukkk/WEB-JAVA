@@ -1,8 +1,14 @@
 package com.example.demo.domain;
 
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
+
+@Getter
+@Setter
 public class Product {
     private UUID id;
 
@@ -16,40 +22,7 @@ public class Product {
 
     private String description;
 
-    // Constructors, getters, and setters
     public Product() {
         this.id = UUID.randomUUID();
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }
