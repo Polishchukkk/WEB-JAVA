@@ -15,11 +15,11 @@ import java.util.UUID;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = {ProductService.class})
+@SpringBootTest(classes = {ProductServiceImpl.class})
 class ProductServiceTest {
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     private Product product;
 
