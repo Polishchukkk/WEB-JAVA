@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)  // This automatically initializes mocks
+@ExtendWith(MockitoExtension.class)
 class ProductControllerTest {
 
     @Mock
