@@ -2,14 +2,23 @@ package com.example.demo.dto;
 
 import com.example.demo.validation.CosmicWordCheck;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.UUID;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class ProductDTO {
     private UUID id;
 
     @NotNull
     @Size(min = 3, max = 50)
-    @CosmicWordCheck  // Додаємо кастомну валідацію до поля name
+    @CosmicWordCheck  // Add custom validation to the name field
     private String name;
 
     @NotNull
@@ -17,37 +26,4 @@ public class ProductDTO {
     private Double price;
 
     private String description;
-
-    // Getters and setters
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

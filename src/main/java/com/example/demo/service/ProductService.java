@@ -14,7 +14,8 @@ public class ProductService {
 
     public Product getProductById(UUID id) {
         return Optional.ofNullable(productRepository.get(id))
-                .orElseThrow(() -> new NoSuchElementException("Product with ID " + id + " not found"));
+                .orElseThrow(() ->
+                        new NoSuchElementException(String.format("Product with ID %s not found", id)));
     }
 
     public Product saveProduct(Product product) {

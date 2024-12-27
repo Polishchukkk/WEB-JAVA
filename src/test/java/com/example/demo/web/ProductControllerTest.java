@@ -6,9 +6,10 @@ import com.example.demo.mapper.ProductMapper;
 import com.example.demo.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -19,6 +20,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ExtendWith(MockitoExtension.class)  // This automatically initializes mocks
 class ProductControllerTest {
 
     @Mock
@@ -34,7 +36,6 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
@@ -52,7 +53,7 @@ class ProductControllerTest {
         when(productService.getAllProducts()).thenReturn(List.of(product));
         when(productMapper.productToProductDTO(any(Product.class))).thenReturn(productDTO);
 
-        mockMvc.perform(get("/api/products"))
+        mockMvc.perform(get("/api/v1/products"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Test Product"))
                 .andExpect(jsonPath("$[0].price").value(29.99));
@@ -77,7 +78,7 @@ class ProductControllerTest {
         when(productService.saveProduct(any(Product.class))).thenReturn(product);
         when(productMapper.productToProductDTO(any(Product.class))).thenReturn(savedProductDTO);
 
-        mockMvc.perform(post("/api/products")
+        mockMvc.perform(post("/api/v1/products")
                         .contentType("application/json")
                         .content("{\"name\":\"Star Product\",\"price\":19.99}"))
                 .andExpect(status().isCreated())
@@ -105,7 +106,7 @@ class ProductControllerTest {
         when(productService.updateProduct(eq(productId), any(Product.class))).thenReturn(product);
         when(productMapper.productToProductDTO(any(Product.class))).thenReturn(updatedProductDTO);
 
-        mockMvc.perform(put("/api/products/{id}", productId)
+        mockMvc.perform(put("/api/v1/products/{id}", productId)
                         .contentType("application/json")
                         .content("{\"name\":\"Updated Star Product\",\"price\":29.99}"))
                 .andExpect(status().isOk())
@@ -119,7 +120,7 @@ class ProductControllerTest {
 
         doNothing().when(productService).deleteProduct(productId);
 
-        mockMvc.perform(delete("/api/products/{id}", productId))
+        mockMvc.perform(delete("/api/v1/products/{id}", productId))
                 .andExpect(status().isNoContent());
     }
 }

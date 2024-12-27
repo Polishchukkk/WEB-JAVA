@@ -1,10 +1,19 @@
 package com.example.demo.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class OrderDTO {
     private UUID orderId;
 
@@ -17,36 +26,4 @@ public class OrderDTO {
 
     @NotNull
     private LocalDate orderDate;
-
-    public UUID getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(UUID orderId) {
-        this.orderId = orderId;
-    }
-
-    public List<ProductDTO> getProductList() {
-        return productList;
-    }
-
-    public void setProductList(List<ProductDTO> productList) {
-        this.productList = productList;
-    }
-
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public LocalDate getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(LocalDate orderDate) {
-        this.orderDate = orderDate;
-    }
 }
