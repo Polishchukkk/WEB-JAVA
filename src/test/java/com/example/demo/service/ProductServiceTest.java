@@ -40,7 +40,7 @@ class ProductServiceTest {
     void testGetAllProducts() {
         productService.saveProduct(product);
         List<Product> products = productService.getAllProducts();
-        assertEquals(3, products.size());
+        assertEquals(4, products.size());
     }
 
     @Test
@@ -59,5 +59,57 @@ class ProductServiceTest {
                 () -> productService.getProductById(randomId)
         );
         assertTrue(exception.getMessage().contains("Product with ID " + randomId + " not found"));
+    }
+    @Test
+    void testUpdateProduct() {
+        Product savedProduct = productService.saveProduct(product);
+        UUID id = savedProduct.getId();
+
+        Product updatedProduct = new Product();
+        updatedProduct.setName("Updated Name");
+        updatedProduct.setPrice(200.0);
+        updatedProduct.setDescription("Updated description");
+
+        Product result = productService.updateProduct(id, updatedProduct);
+        assertEquals("Updated Name", result.getName());
+        assertEquals(200.0, result.getPrice());
+        assertEquals(id, result.getId());
+    }
+
+    @Test
+    void testUpdateProductNotFound() {
+        UUID randomId = UUID.randomUUID();
+        Product updatedProduct = new Product();
+        updatedProduct.setName("Non-existing");
+        updatedProduct.setPrice(300.0);
+
+        NoSuchElementException exception = assertThrows(
+                NoSuchElementException.class,
+                () -> productService.updateProduct(randomId, updatedProduct)
+        );
+        assertTrue(exception.getMessage().contains("not found for update"));
+    }
+
+    @Test
+    void testDeleteProduct() {
+        Product savedProduct = productService.saveProduct(product);
+        UUID id = savedProduct.getId();
+
+        productService.deleteProduct(id);
+        assertThrows(
+                NoSuchElementException.class,
+                () -> productService.getProductById(id),
+                "Product should be deleted and not found"
+        );
+    }
+
+    @Test
+    void testDeleteProductNotFound() {
+        UUID randomId = UUID.randomUUID();
+        NoSuchElementException exception = assertThrows(
+                NoSuchElementException.class,
+                () -> productService.deleteProduct(randomId)
+        );
+        assertTrue(exception.getMessage().contains("not found for deletion"));
     }
 }
