@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Product;
+import com.example.demo.service.implementation.ProductServiceImpl;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
