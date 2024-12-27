@@ -1,17 +1,16 @@
 package com.example.demo.web;
 
+import com.example.demo.web.ProductController;
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.domain.Product;
 import com.example.demo.mapper.ProductMapper;
-import com.example.demo.service.ProductService;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.demo.service.implementation.ProductServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,24 +19,18 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ProductController.class) // Для тестування контролера
+@AutoConfigureMockMvc
 class ProductControllerTest {
 
-    @Mock
-    private ProductService productService;
+    @MockBean
+    private ProductServiceImpl productService; // Замокати ProductServiceImpl
 
-    @Mock
-    private ProductMapper productMapper;
+    @MockBean
+    private ProductMapper productMapper; // Замокати ProductMapper
 
-    @InjectMocks
-    private ProductController productController;
-
-    private MockMvc mockMvc;
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
-    }
+    @Autowired
+    private MockMvc mockMvc; // MockMvc буде автоматично інжектований
 
     @Test
     void testGetAllProducts() throws Exception {

@@ -3,7 +3,7 @@ package com.example.demo.web;
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.domain.Product;
 import com.example.demo.mapper.ProductMapper;
-import com.example.demo.service.ProductService;
+import com.example.demo.service.implementation.ProductServiceImpl;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +17,11 @@ import java.util.UUID;
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
     private final ProductMapper productMapper;
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
-    public ProductController(ProductService productService, ProductMapper productMapper) {
+    public ProductController(ProductServiceImpl productService, ProductMapper productMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
     }
